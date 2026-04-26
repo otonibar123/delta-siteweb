@@ -304,7 +304,12 @@
                         </div>
                     </div>
                 </div>
-                <form class="contact-form" id="contactForm" novalidate>
+                <form class="contact-form" id="contactForm" action="https://formsubmit.co/contact@delta-secretariat.fr" method="POST" novalidate>
+                    <input type="hidden" name="_subject" value="Nouvelle demande depuis delta-secretariat.fr">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_next" value="https://delta-secretariat.fr/?envoye=1">
+                    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nom">Nom complet</label>

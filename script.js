@@ -80,10 +80,10 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', highlightNav, { passive: true });
     highlightNav();
 
-    // Contact form
+    // Contact form — envoi via FormSubmit (AJAX)
     const form = document.getElementById('contactForm');
     if (form) {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = form.querySelector('button[type="submit"]');
             const originalText = btn.textContent;
@@ -91,18 +91,33 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.textContent = 'Envoi en cours…';
             btn.disabled = true;
 
-            // TODO: brancher l'endpoint réel (Formspree, EmailJS, API custom…)
-            setTimeout(() => {
+            try {
+                const res = await fetch('https://formsubmit.co/ajax/contact@delta-secretariat.fr', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(Object.fromEntries(new FormData(form)))
+                });
+                if (!res.ok) throw new Error('network');
+                const data = await res.json();
+                if (data.success !== 'true' && data.success !== true) throw new Error('formsubmit');
+
                 btn.textContent = 'Demande envoyée — merci';
                 btn.classList.add('btn-success');
-
                 setTimeout(() => {
                     form.reset();
                     btn.textContent = originalText;
                     btn.classList.remove('btn-success');
                     btn.disabled = false;
                 }, 3500);
-            }, 900);
+            } catch (err) {
+                btn.textContent = 'Erreur — réessayez';
+                btn.classList.add('btn-error');
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('btn-error');
+                    btn.disabled = false;
+                }, 3500);
+            }
         });
     }
 });

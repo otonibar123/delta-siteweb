@@ -173,6 +173,15 @@ p {
     cursor: default;
 }
 
+.btn-error,
+.btn-error:hover {
+    background: #b3261e;
+    border-color: #b3261e;
+    color: var(--cream);
+    transform: none;
+    cursor: default;
+}
+
 .btn-outline {
     background: transparent;
     color: var(--ink);
